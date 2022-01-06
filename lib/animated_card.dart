@@ -4,11 +4,12 @@ import 'clickable_text.dart';
 
 const maxChars = 100;
 class AnimatedCard extends StatefulWidget {
-  const AnimatedCard({Key? key, required this.originalDescriptionText, required this.title, required this.subTitle, this.virtualTourText}) : super(key: key);
+  const AnimatedCard({Key? key,required this.shrinkDown, required this.originalDescriptionText, required this.title, required this.subTitle, this.virtualTourText}) : super(key: key);
   final originalDescriptionText;
   final String title;
   final String subTitle;
   final String? virtualTourText;
+  final bool shrinkDown;
 
 
   @override
@@ -17,7 +18,7 @@ class AnimatedCard extends StatefulWidget {
 
 class _AnimatedCardState extends State<AnimatedCard> {
   var _expand = false;
-  var _descriptionText;
+  var _descriptionText = "";
   var _myHeight = 50.0;
   var title = "";
   var subtitle = "";
@@ -47,13 +48,8 @@ class _AnimatedCardState extends State<AnimatedCard> {
       heightExpanded = (widget.originalDescriptionText.length / 3) + 130;
     }
 
-    print("expand = $_expand");
     if (_expand)
     {
-      print("_originalDescriptionText=${widget.originalDescriptionText}");
-      print("myht = ${widget.originalDescriptionText}");
-      print("maxChars = ${maxChars}");
-      print("widget.originalDescriptionText.length = ${widget.originalDescriptionText.length}");
       if (widget.originalDescriptionText.length > maxChars){
         _descriptionText = widget.originalDescriptionText;
         _myHeight = heightExpanded;
@@ -65,7 +61,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
     else {
       _myHeight = heightNotExpanded;
 
-      if (widget.originalDescriptionText.length > maxChars){print("stripping");
+      if (widget.originalDescriptionText.length > maxChars){
         _descriptionText = widget.originalDescriptionText.substring(0, maxChars);
       }
       else {
@@ -74,7 +70,9 @@ class _AnimatedCardState extends State<AnimatedCard> {
     }
 
     var _textWidth = _width * .5;
-    print("myht = ${_myHeight}");
+    if (widget.shrinkDown){
+      _myHeight = 0;
+    }
     // print("_descriptionText = ${_des}");
     return GestureDetector(
       onTap: clickedMore,
@@ -120,7 +118,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
                   const SizedBox(width: 8),
                   (widget.virtualTourText == null)  ? Container() : TextButton(      //todo: don't show if there's not a virtual tour
                     child:  Text(widget.virtualTourText!),
-                    onPressed: () {setState(() {print ("tapped vt");
+                    onPressed: () {setState(() {
                      // _expand = !_expand;
                     });},
                   ),
