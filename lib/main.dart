@@ -79,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    final ScrollController scrollController = ScrollController();
     return SafeArea(
       child: Column(
         children: [
